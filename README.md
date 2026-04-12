@@ -4,6 +4,7 @@ A factual reference of open data sources for support services across Australia �
 
 ## Contents
 
+- [Tracker](tracker.csv) — Status of every data source: found, ready, connected, or blocked
 - [Portals](portals/) — Australian government open data portals, how they work, and how to query them
 - [Datasets](datasets/) — Catalogued datasets relevant to support services, organised by state
 - [Licenses](licenses/) — A guide to the licenses used across Australian open data
