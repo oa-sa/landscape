@@ -254,6 +254,66 @@ You can test Overpass queries interactively at [overpass-turbo.eu](https://overp
 
 ---
 
+## Terms of Use and Legal Basis
+
+### data.gov.au (Federal)
+
+From the [data.gov.au terms of use](https://data.gov.au/about):
+
+> "Anyone can access the public data published by federal, state and local government agencies."
+
+The Australian Government's open data policy requires that **"all government agencies make non-sensitive data open by default."**
+
+**License**: Material on data.gov.au is provided under **Creative Commons Attribution 3.0 Australia** unless otherwise noted.
+
+**Attribution requirement** (from data.gov.au):
+
+> Attribution to: Organisation name, jurisdiction, title of dataset, date the content was sourced, dataset URL
+
+Example:
+```
+The Department of the Primary Industries and Regions, South Australia,
+Field Crop Estimates, Sourced on 22 July 2013,
+http://www.data.sa.gov.au/dataset/field-crop-production-estimates
+```
+
+**Usage terms**: You agree to use data.gov.au only for lawful purposes, and in a manner that does not infringe the rights of or restrict or inhibit the use and enjoyment of data.gov.au by any third party. There are no restrictions on automated API access, rate limits, or commercial use documented in the terms.
+
+### CKAN API (The Platform)
+
+All Australian government data portals run on CKAN. From the [official CKAN API documentation](https://docs.ckan.org/en/2.11/api/index.html):
+
+> "This section documents CKAN APIs, for developers who want to write code that interacts with CKAN sites and their data."
+>
+> "All of a CKAN website's core functionality (everything you can do with the web interface and more) can be used by external code that calls the CKAN API."
+
+The CKAN API is explicitly designed for programmatic access by external developers. No authentication is required for reading public data.
+
+### State Portals
+
+State government portals follow the same pattern:
+
+| Portal | Default License |
+|--------|----------------|
+| NSW (data.nsw.gov.au) | CC-BY 4.0 |
+| VIC (discover.data.vic.gov.au) | CC-BY 4.0 |
+| QLD (data.qld.gov.au) | CC-BY 4.0 |
+| SA (data.sa.gov.au) | CC-BY (mixed versions) |
+| WA (catalogue.data.wa.gov.au) | CC-BY 4.0 + custom |
+
+Always check the individual dataset's license field, as some datasets may use different terms.
+
+### Summary
+
+- The data is explicitly open and intended for public use
+- The API is designed for developers to access programmatically
+- Creative Commons Attribution licenses allow redistribution and adaptation
+- Attribution is required — credit the source organisation, dataset, and date
+- No restrictions on automated access or rate limits are documented
+- Commercial use is permitted under CC-BY licenses
+
+---
+
 ## Notes
 
 - **SA's portal** harvests datasets from data.gov.au (federal) and other state portals. Search result counts may appear inflated — filter for SA-specific data.
