@@ -17,7 +17,7 @@ The pipeline normalises all state values to standard 2-3 letter codes (NSW, VIC,
 2. The address string (pattern matching)
 
 ### Remaining Gap
-~741 records still have no state — these have no postcode and no state in the address. Mostly from the SA Community Directory where organisations don't have a physical address.
+~741 records still have no state - these have no postcode and no state in the address. Mostly from the SA Community Directory where organisations don't have a physical address.
 
 ## Categories
 
@@ -33,20 +33,20 @@ food, housing, health, mental_health, alcohol_drugs, legal, financial, employmen
 ## Record Quality
 
 ### Problem
-Not all records are equally useful. Some have a name but no address, no phone, no website — making it hard for someone to actually find or contact the service.
+Not all records are equally useful. Some have a name but no address, no phone, no website - making it hard for someone to actually find or contact the service.
 
 ### Solution
 Each record is scored with a `quality` field:
-- **complete** — has location (address or coordinates) AND contact info (phone, website, or email). 84% of records.
-- **partial** — has either location OR contact info, but not both. 15% of records.
-- **minimal** — has neither. 0.3% of records.
+- **complete** - has location (address or coordinates) AND contact info (phone, website, or email). 84% of records.
+- **partial** - has either location OR contact info, but not both. 15% of records.
+- **minimal** - has neither. 0.3% of records.
 
-This allows consumers of the data to filter by quality — e.g., only show "complete" records in a search interface.
+This allows consumers of the data to filter by quality - e.g., only show "complete" records in a search interface.
 
 ## Duplicate Names
 
 ### Observation
-Some service names appear hundreds of times (e.g., "MAX Employment" appears 501 times). These are **not duplicates** — they are individual branch locations of the same organisation across Australia. This is expected from the Employment Services dataset, which lists every branch of every provider.
+Some service names appear hundreds of times (e.g., "MAX Employment" appears 501 times). These are **not duplicates** - they are individual branch locations of the same organisation across Australia. This is expected from the Employment Services dataset, which lists every branch of every provider.
 
 ## Data Freshness
 
@@ -55,7 +55,7 @@ Government datasets are snapshots in time. Some are from 2016, others from 2021,
 
 ### How We Track It
 - Every record has a `source_date` field showing when it was last fetched
-- The original dataset age varies — the pipeline can only fetch what's published
+- The original dataset age varies - the pipeline can only fetch what's published
 - Government portals update at their own pace; we can't force freshness
 
 ### Sources by Data Age
@@ -84,7 +84,7 @@ The Overpass public API has fair-use rate limits. Querying all of Australia for 
 ### Solution
 - Queries are split state by state with 3-second pauses
 - Timeout set to 90 seconds per state
-- Partial results are accepted — some states may not come through every run
+- Partial results are accepted - some states may not come through every run
 - Coverage improves over multiple runs
 
 ### Current Coverage
