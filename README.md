@@ -21,6 +21,6 @@ Anyone working with Australian support services data:
 
 ## About
 
-This is a research project by [commons-au](https://github.com/commons-au), documenting the current state of open data for support services in Australia.
+This is a research project by [oa-sa](https://github.com/oa-sa), documenting the current state of open data for support services in Australia.
 
 All content in this repository is released under [CC0 1.0](LICENSE) — public domain, no restrictions.
