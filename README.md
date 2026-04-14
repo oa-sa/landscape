@@ -8,6 +8,7 @@ A factual reference of open data sources for support services across Australia �
 - [Portals](portals/) — Australian government open data portals, how they work, and how to query them
 - [Datasets](datasets/) — Catalogued datasets relevant to support services, organised by state
 - [Licenses](licenses/) — A guide to the licenses used across Australian open data
+- [Data Quality](data-quality.md) — Known data quality issues and how the pipeline handles them
 
 ## Who This Is For
 
