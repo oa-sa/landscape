@@ -58,7 +58,7 @@
 \vspace{1em}
 
 \begin{abstract}
-Australia's support services data --food relief, housing, health, legal aid, employment --is either proprietary or fragmented across disconnected government portals. No open, consolidated dataset exists. This paper maps the full data landscape, identifies the structural gap, and presents the Open Australian Services Archive (oa-sa): a working open-source pipeline that aggregates 89,575 services from 27 public sources into a single, openly licensed dataset. It then examines how the project could expand and what organisational sponsorship would make possible.
+Australia's support services data --food relief, housing, health, legal aid, employment --is either proprietary or fragmented across disconnected government portals. No open, consolidated dataset exists. This paper maps the full data landscape, identifies the structural gap, and presents the Open Australian Services Archive (oa-sa): a working open-source pipeline that aggregates 24,497 services from 26 public sources into a single, openly licensed dataset. It then examines how the project could expand and what organisational sponsorship would make possible.
 \end{abstract}
 
 % --------------------------------------------------------------------
@@ -109,7 +109,11 @@ API access is available to approved partners but not openly. The NHSD covers hea
 
 \subsection{ACNC Charity Register}
 
-The Australian Charities and Not-for-profits Commission maintains a register of 65,000+ registered charities with bulk download available [6]. This is the most significant openly downloadable dataset in the sector, including charity name, type, subtypes, activities, and contact information. As of April 2026, the ACNC register has been integrated into the oa-sa pipeline, contributing 65,078 records with national coverage across all states and territories.
+The Australian Charities and Not-for-profits Commission maintains a register of 65,000+ registered charities with bulk download available [6], including charity name, type, subtypes and address.
+
+The ACNC register was briefly integrated into the oa-sa pipeline in April 2026 and then removed. A registered charity is not the same as an active service: the register contains no phone, email, opening hours or coordinates; descriptions are boilerplate strings generated from beneficiary tags (``Registered charity serving aged persons, children, families''); and thousands of records are umbrella-entity duplicates (e.g. a single diocesan trustee corporation registered many times, once per parish). Including the register inflated the dataset with 65,078 low-signal records and degraded overall data quality. The registry is more appropriately treated as background reference data than as a services directory.
+
+The ACNC's \textit{Annual Information Statement (AIS) Programs} dataset is a more promising candidate for future integration: each row represents a program a charity runs, with program name, description, beneficiaries, and operating locations. This is service-shaped data rather than registry data, and may be incorporated in a later release.
 
 \subsection{Government Open Data Portals}
 
@@ -286,12 +290,12 @@ The pipeline operates in three stages:
 \toprule
 \rowcolor{headerbg} \theadstyle{Metric} & \theadstyle{Value} \\
 \midrule
-Total records & 89,575 \\
-Data sources & 27 (26 government + 1 OpenStreetMap) \\
+Total records & 24,497 \\
+Data sources & 26 (25 government + 1 OpenStreetMap) \\
 Government portals connected & 5 of 6 \\
 Schema fields & 24 (16 service fields + 8 source metadata) \\
 Service categories & 17 standardised \\
-Record completeness & 49\% complete, 27\% partial, 24\% minimal \\
+Record completeness & 84\% complete, 16\% partial, 0.3\% minimal \\
 Output formats & CSV, JSON, SQLite \\
 Code license & CC0 1.0 (public domain) \\
 Data license & CC-BY (per source) \\
@@ -311,16 +315,16 @@ Web interface & \url{https://oa-sa.vercel.app} \\
 \toprule
 \rowcolor{headerbg} \theadstyle{Jurisdiction} & \theadstyle{Sources} & \theadstyle{Records} & \theadstyle{Status} \\
 \midrule
-Federal & 4 & 72,030 & Connected \\
+Federal & 3 & 6,952 & Connected \\
 South Australia & 4 & 14,610 & Connected \\
-Victoria & 9 & 468 & Connected \\
-Queensland & 8 & 523 & Connected \\
+Victoria & 8 & 456 & Connected \\
+Queensland & 9 & 523 & Connected \\
 Tasmania & 1 & 27 & Connected \\
 New South Wales & 0 & 0 & Covered via federal sources \\
 Western Australia & 0 & 0 & Covered via federal sources \\
 OpenStreetMap & 1 & 1,929 & Connected \\
 \midrule
-\textbf{Total} & \textbf{27} & \textbf{89,575} & \\
+\textbf{Total} & \textbf{26} & \textbf{24,497} & \\
 \bottomrule
 \end{tabular}
 \caption{Data sources by jurisdiction}
@@ -356,7 +360,7 @@ The system runs on free-tier infrastructure: GitHub Actions for pipeline executi
 
 \section{Expansion Potential}
 
-The current dataset of 89,575 records represents what is achievable through public APIs and open data alone. The recent integration of the ACNC Charity Register (65,078 records) nearly quadrupled the dataset and brought national coverage across all states and territories. Several pathways exist for further expansion.
+The current dataset of 24,497 records represents what is achievable through public APIs and open data alone while holding a strict data-quality bar (84\% of records are classified \emph{complete}, carrying both a location and at least one contact channel). Several pathways exist for further expansion.
 
 \subsection{Near-term: additional open sources}
 
@@ -401,7 +405,7 @@ Sponsorship from an organisation with social impact mandate and government relat
 \midrule
 Data sources & 27 public API sources & + partnerships with state agencies and community organisations \\
 \addlinespace
-Coverage & 89,575 records & Potential to incorporate NHSD (390K), state directories, org directories \\
+Coverage & 24,497 records & Potential to incorporate NHSD (390K), state directories, org directories \\
 \addlinespace
 Geographic reach & Thin in NSW, WA, ACT, NT & Introductions to state government data teams \\
 \addlinespace
@@ -418,7 +422,7 @@ Sustainability & Dependent on individual & Organisational commitment and continu
 \end{table}
 
 \clearpage
-The infrastructure exists. The pipeline works. The data is flowing. With 89,575 records from 27 sources, the archive already provides meaningful national coverage. But scaling further --incorporating the NHSD's 390,000 health services, state-level directories, and community organisation data --requires dedicated hosting, a production API layer, database infrastructure, and ongoing maintenance. Equally important are the relationships, credibility, and institutional backing that open doors to the data that isn't public yet. Sponsorship enables both: the infrastructure to handle scale and the organisational identity to make partnerships possible.
+The infrastructure exists. The pipeline works. The data is flowing. With 24,497 records from 26 sources, the archive already provides meaningful national coverage. But scaling further --incorporating the NHSD's 390,000 health services, state-level directories, and community organisation data --requires dedicated hosting, a production API layer, database infrastructure, and ongoing maintenance. Equally important are the relationships, credibility, and institutional backing that open doors to the data that isn't public yet. Sponsorship enables both: the infrastructure to handle scale and the organisational identity to make partnerships possible.
 
 % --------------------------------------------------------------------
 \section*{References}
