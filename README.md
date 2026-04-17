@@ -9,6 +9,7 @@ A factual reference of open data sources for support services across Australia -
 - [Datasets](datasets/) - Catalogued datasets relevant to support services, organised by state
 - [Licenses](licenses/) - A guide to the licenses used across Australian open data
 - [Data Quality](data-quality.md) - Known data quality issues and how the pipeline handles them
+- [Access Barriers](access-barriers.md) - Public data that isn't actually open or downloadable
 
 ## Who This Is For
 
