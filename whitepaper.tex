@@ -58,7 +58,7 @@
 \vspace{1em}
 
 \begin{abstract}
-Australia's support services data --food relief, housing, health, legal aid, employment --is either proprietary or fragmented across disconnected government portals. No open, consolidated dataset exists. This paper maps the full data landscape, identifies the structural gap, and presents the Open Australian Services Archive (oa-sa): a working open-source pipeline that aggregates 24,498 services from 25 public sources into a single, openly licensed dataset. It then examines how the project could expand and what organisational sponsorship would make possible.
+Australia's support services data --food relief, housing, health, legal aid, employment --is either proprietary or fragmented across disconnected government portals. No open, consolidated dataset exists. This paper maps the full data landscape, identifies the structural gap, and presents the Open Australian Services Archive (oa-sa): a working open-source pipeline that aggregates 89,575 services from 27 public sources into a single, openly licensed dataset. It then examines how the project could expand and what organisational sponsorship would make possible.
 \end{abstract}
 
 % --------------------------------------------------------------------
@@ -109,7 +109,7 @@ API access is available to approved partners but not openly. The NHSD covers hea
 
 \subsection{ACNC Charity Register}
 
-The Australian Charities and Not-for-profits Commission maintains a register of 60,000+ registered charities with bulk download available [6]. This is the most significant openly downloadable dataset in the sector, including charity name, type, subtypes, activities, and contact information. It does not, however, contain individual service listings --it is a register of organisations, not services.
+The Australian Charities and Not-for-profits Commission maintains a register of 65,000+ registered charities with bulk download available [6]. This is the most significant openly downloadable dataset in the sector, including charity name, type, subtypes, activities, and contact information. As of April 2026, the ACNC register has been integrated into the oa-sa pipeline, contributing 65,078 records with national coverage across all states and territories.
 
 \subsection{Government Open Data Portals}
 
@@ -250,7 +250,7 @@ The Open Australian Services Archive is an automated, open-source pipeline that 
   OpenStreetMap (Geofabrik extract)   -->  osm/ (download/filter/convert)
 \end{verbatim}
 
-The system is implemented as four repositories under the \texttt{oa-sa} GitHub organisation:
+The system is implemented as five repositories under the \texttt{oa-sa} GitHub organisation:
 
 \begin{table}[ht!]
 \centering
@@ -260,6 +260,7 @@ The system is implemented as four repositories under the \texttt{oa-sa} GitHub o
 \midrule
 \texttt{oa-sa/data} & Published dataset in CSV, JSON, and SQLite formats \\
 \texttt{oa-sa/pipeline} & Python ETL pipeline: fetch from CKAN APIs, transform to common schema, merge into output \\
+\texttt{oa-sa/browse} & Web interface for searching and exploring the dataset (\url{https://oa-sa.vercel.app}) \\
 \texttt{oa-sa/osm} & OpenStreetMap extraction via Geofabrik download and osmium filtering \\
 \texttt{oa-sa/landscape} & Research documentation: portal APIs, dataset catalogue, license matrix, data quality analysis \\
 \bottomrule
@@ -285,13 +286,13 @@ The pipeline operates in three stages:
 \toprule
 \rowcolor{headerbg} \theadstyle{Metric} & \theadstyle{Value} \\
 \midrule
-Total records & 24,498 \\
-Data sources & 25 (24 government + 1 OpenStreetMap) \\
+Total records & 89,575 \\
+Data sources & 27 (26 government + 1 OpenStreetMap) \\
 Government portals connected & 5 of 6 \\
 Schema fields & 24 (16 service fields + 8 source metadata) \\
 Service categories & 17 standardised \\
-Record completeness & 84\% complete, 15\% partial, 1\% minimal \\
-Output formats & CSV (12 MB), JSON (23 MB), SQLite (15 MB) \\
+Record completeness & 49\% complete, 27\% partial, 24\% minimal \\
+Output formats & CSV, JSON, SQLite \\
 Code license & CC0 1.0 (public domain) \\
 Data license & CC-BY (per source) \\
 DOI & 10.5281/zenodo.19564281 \\
@@ -310,16 +311,16 @@ Web interface & \url{https://oa-sa.vercel.app} \\
 \toprule
 \rowcolor{headerbg} \theadstyle{Jurisdiction} & \theadstyle{Sources} & \theadstyle{Records} & \theadstyle{Status} \\
 \midrule
-Federal & 3 & 7,237 & Connected \\
+Federal & 4 & 72,030 & Connected \\
 South Australia & 4 & 14,610 & Connected \\
-Victoria & 6 & 393 & Connected \\
-Queensland & 8 & 524 & Connected \\
+Victoria & 9 & 468 & Connected \\
+Queensland & 8 & 523 & Connected \\
 Tasmania & 1 & 27 & Connected \\
-New South Wales & 0 & 0 & Infrastructure ready \\
-Western Australia & 0 & 0 & Limited portal data \\
-OpenStreetMap & 1 & 1,989 & Connected \\
+New South Wales & 0 & 0 & Covered via federal sources \\
+Western Australia & 0 & 0 & Covered via federal sources \\
+OpenStreetMap & 1 & 1,929 & Connected \\
 \midrule
-\textbf{Total} & \textbf{23} & \textbf{24,498} & \\
+\textbf{Total} & \textbf{27} & \textbf{89,575} & \\
 \bottomrule
 \end{tabular}
 \caption{Data sources by jurisdiction}
@@ -327,7 +328,7 @@ OpenStreetMap & 1 & 1,989 & Connected \\
 
 \subsection{Source Landscape}
 
-The landscape repository tracks 55 data sources across all states and territories:
+The landscape repository tracks 56 data sources across all states and territories:
 
 \begin{table}[ht!]
 \centering
@@ -335,11 +336,11 @@ The landscape repository tracks 55 data sources across all states and territorie
 \toprule
 \rowcolor{headerbg} \theadstyle{Status} & \theadstyle{Count} \\
 \midrule
-Connected (data flowing through pipeline) & 25 \\
+Connected (data flowing through pipeline) & 27 \\
 Blocked (format or authentication issues) & 5 \\
-Identified, not yet integrated & 25 \\
+Identified, not yet integrated & 24 \\
 \midrule
-\textbf{Total sources tracked} & \textbf{55} \\
+\textbf{Total sources tracked} & \textbf{56} \\
 \bottomrule
 \end{tabular}
 \caption{Source tracking status}
@@ -355,14 +356,14 @@ The system runs on free-tier infrastructure: GitHub Actions for pipeline executi
 
 \section{Expansion Potential}
 
-The current dataset of 24,498 records represents what is achievable through public APIs and open data alone. Several pathways exist for significant expansion.
+The current dataset of 89,575 records represents what is achievable through public APIs and open data alone. The recent integration of the ACNC Charity Register (65,078 records) nearly quadrupled the dataset and brought national coverage across all states and territories. Several pathways exist for further expansion.
 
 \subsection{Near-term: additional open sources}
 
 \begin{itemize}[nosep]
-    \item \textbf{ACNC Charity Register} --60,000+ registered charities with bulk download available [6]. Not yet integrated into the pipeline.
-    \item \textbf{Remaining government sources} --25 identified datasets not yet connected, particularly from NSW, WA, ACT, and NT.
-    \item \textbf{Additional OpenStreetMap tags} --libraries, clinics, pharmacies, and other facility types not currently extracted.
+    \item \textbf{Remaining government sources} --24 identified datasets not yet connected, particularly state-level datasets from NSW, WA, ACT, and NT.
+    \item \textbf{Additional OpenStreetMap tags} --libraries, clinics, pharmacies, and other facility types not currently extracted. Estimated 5,000+ additional records.
+    \item \textbf{Shapefile conversion} --several government sources publish in Shapefile format only. Adding conversion support would unlock additional datasets.
 \end{itemize}
 
 \clearpage
@@ -398,9 +399,9 @@ Sponsorship from an organisation with social impact mandate and government relat
 \toprule
 \rowcolor{headerbg} \theadstyle{Capability} & \theadstyle{Without sponsorship} & \theadstyle{With sponsorship} \\
 \midrule
-Data sources & 25 public API sources & + partnerships with state agencies and community organisations \\
+Data sources & 27 public API sources & + partnerships with state agencies and community organisations \\
 \addlinespace
-Coverage & 24,498 records (20\% of landscape) & Potential to incorporate ACNC (60K), NHSD (390K), org directories \\
+Coverage & 89,575 records & Potential to incorporate NHSD (390K), state directories, org directories \\
 \addlinespace
 Geographic reach & Thin in NSW, WA, ACT, NT & Introductions to state government data teams \\
 \addlinespace
@@ -417,7 +418,7 @@ Sustainability & Dependent on individual & Organisational commitment and continu
 \end{table}
 
 \clearpage
-The infrastructure exists. The pipeline works. The data is flowing. But scaling from 24,000 records to hundreds of thousands changes the technical requirements significantly --larger datasets require dedicated hosting, a production API layer, database infrastructure, and ongoing maintenance. Equally important are the relationships, credibility, and institutional backing that open doors to the data that isn't public yet. Sponsorship enables both: the infrastructure to handle scale and the organisational identity to make partnerships possible.
+The infrastructure exists. The pipeline works. The data is flowing. With 89,575 records from 27 sources, the archive already provides meaningful national coverage. But scaling further --incorporating the NHSD's 390,000 health services, state-level directories, and community organisation data --requires dedicated hosting, a production API layer, database infrastructure, and ongoing maintenance. Equally important are the relationships, credibility, and institutional backing that open doors to the data that isn't public yet. Sponsorship enables both: the infrastructure to handle scale and the organisational identity to make partnerships possible.
 
 % --------------------------------------------------------------------
 \section*{References}
