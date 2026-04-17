@@ -17,7 +17,7 @@ jobs:
         with:
           root_file: whitepaper.tex
 
-      - name: Commit PDF
+      - name: Commit PDF to landscape repo
         run: |
           mv whitepaper.pdf oasa-whitepaper.pdf
           git config user.name "oa-sa-bot"
@@ -27,5 +27,20 @@ jobs:
             echo "No changes to PDF."
           else
             git commit -m "Rebuild white paper PDF ($(date -u +%Y-%m-%d))"
+            git push
+          fi
+
+      - name: Publish PDF to browse repo (website)
+        run: |
+          git clone https://x-access-token:${{ secrets.DATA_REPO_TOKEN }}@github.com/oa-sa/browse.git browse-repo
+          cp oasa-whitepaper.pdf browse-repo/static/oasa-whitepaper.pdf
+          cd browse-repo
+          git config user.name "oa-sa-bot"
+          git config user.email "bot@oa-sa.org"
+          git add static/oasa-whitepaper.pdf
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+          else
+            git commit -m "Update white paper PDF ($(date -u +%Y-%m-%d))"
             git push
           fi
