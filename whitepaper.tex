@@ -1,0 +1,437 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage[table]{xcolor}
+\usepackage{colortbl}
+\usepackage{array}
+
+% Table styling
+\definecolor{headerblue}{RGB}{41, 65, 94}
+\definecolor{headerbg}{RGB}{234, 240, 248}
+\definecolor{rowalt}{RGB}{245, 247, 250}
+\renewcommand{\arraystretch}{1.35}
+\newcommand{\theadstyle}{\cellcolor{headerbg}\textbf}
+\rowcolors{2}{white}{rowalt}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{parskip}
+\usepackage{needspace}
+
+% Prevent orphaned headings and list items at page bottoms
+\usepackage{etoolbox}
+\pretocmd{\section}{\needspace{6\baselineskip}}{}{}
+\pretocmd{\subsection}{\needspace{4\baselineskip}}{}{}
+\pretocmd{\item}{\needspace{2\baselineskip}}{}{}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!60!black,
+    urlcolor=blue!60!black,
+    citecolor=blue!60!black
+}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Open Australian Services Archive}
+\fancyhead[R]{\small White Paper}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries Open Australian Services Archive}\\[0.4em]
+{\large The Case for Open Support Services Data in Australia}\\[1.5em]
+{\normalsize Nirmala Rao Dhanawada}\\[0.3em]
+{\small \href{mailto:swnirmal@icloud.com}{swnirmal@icloud.com} \quad|\quad \url{https://github.com/oa-sa}}\\[1.5em]
+{\normalsize April 2026}
+\end{center}
+
+\vspace{1em}
+
+\begin{abstract}
+Australia's support services data --food relief, housing, health, legal aid, employment --is either proprietary or fragmented across disconnected government portals. No open, consolidated dataset exists. This paper maps the full data landscape, identifies the structural gap, and presents the Open Australian Services Archive (oa-sa): a working open-source pipeline that aggregates 24,498 services from 25 public sources into a single, openly licensed dataset. It then examines how the project could expand and what organisational sponsorship would make possible.
+\end{abstract}
+
+% --------------------------------------------------------------------
+% PART 1: THE LANDSCAPE
+% --------------------------------------------------------------------
+
+\section{The Support Services Data Landscape}
+
+This section documents the major systems that hold support services data in Australia. The aim is to present the landscape as it exists today, without judgement on any individual provider --each serves a purpose and a constituency. The question is not whether these systems are good or bad, but whether the ecosystem as a whole provides open, interoperable access to support services data.
+
+\subsection{Infoxchange Service Directory}
+
+The Infoxchange Service Directory is ``Australia's largest up-to-date health and welfare services directory, with over 450,000 services listed'' [1]. It is maintained by a ``powerful human force of committed database updaters'' [1] comprising 15+ staff [2]. The directory responds to ``millions of requests for assistance'' annually [1].
+
+It powers Ask Izzy, a consumer-facing platform offering ``over 370,000 support services'' [2], co-designed with people who have lived experience of homelessness. Ask Izzy is available on Telstra and Vodafone mobile networks without requiring credit or data [2].
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+\rowcolor{headerbg} \theadstyle{Attribute} & \theadstyle{Detail} \\
+\midrule
+Records & 450,000+ service listings [1] \\
+Consumer platform & Ask Izzy (370,000+ services) [2] \\
+Data maintenance & 15+ dedicated database updaters [2] \\
+Founding partners & Google, REA Group, News Corp Australia [2] \\
+Contributing partners & Telstra Foundation, NAB Foundation, Victorian Government, \\
+                       & Vodafone Foundation, Australian Government (DSS) [2] \\
+Known API consumers & Foodbank Australia, OzHarvest, SecondBite, ADF, \\
+                     & federal government recovery services [1] \\
+Access model & API and Service Seeker Widget, available on request [1] \\
+Bulk download & Not available \\
+Open license & None \\
+\bottomrule
+\end{tabular}
+\caption{Infoxchange Service Directory}
+\end{table}
+
+Infoxchange has built an impressive asset over 30 years. Organisations including Foodbank Australia, OzHarvest, SecondBite, and the Australian Defence Force use the directory through its API [1]. The data is well-maintained and comprehensive.
+
+However, access is gated. There is no bulk download, no open license, and no mechanism for redistribution. Organisations that integrate with the directory are dependent on Infoxchange's continued provision of the API under its current terms.
+
+\subsection{National Health Services Directory (NHSD)}
+
+The NHSD, operated by healthdirect Australia and the Australian Digital Health Agency, contains 390,000+ health services [5]. It covers GPs, hospitals, pharmacies, emergency departments, mental health, and allied health providers across Australia.
+
+API access is available to approved partners but not openly. The NHSD covers health services only and does not extend to broader welfare, housing, food relief, or community support services.
+
+\subsection{ACNC Charity Register}
+
+The Australian Charities and Not-for-profits Commission maintains a register of 60,000+ registered charities with bulk download available [6]. This is the most significant openly downloadable dataset in the sector, including charity name, type, subtypes, activities, and contact information. It does not, however, contain individual service listings --it is a register of organisations, not services.
+
+\subsection{Government Open Data Portals}
+
+Six CKAN-based portals publish support services data under Creative Commons licenses:
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+\rowcolor{headerbg} \theadstyle{Portal} & \theadstyle{Jurisdiction} & \theadstyle{License} \\
+\midrule
+data.gov.au & Federal & CC-BY-3.0-AU \\
+data.nsw.gov.au & New South Wales & CC-BY-4.0 \\
+discover.data.vic.gov.au & Victoria & CC-BY-4.0 \\
+data.qld.gov.au & Queensland & CC-BY-4.0 \\
+data.sa.gov.au & South Australia & CC-BY-4.0 \\
+catalogue.data.wa.gov.au & Western Australia & CC-BY-4.0 \\
+\bottomrule
+\end{tabular}
+\caption{Australian government open data portals}
+\end{table}
+
+All six portals use CKAN with public APIs explicitly designed for developer use [4]. The data is legally open and redistributable. These are valuable public resources.
+
+However, they are not coordinated. Each portal uses different schemas, field names, and category labels. A service listed as ``Emergency Relief'' on data.gov.au may be categorised as ``Community Support'' on data.sa.gov.au. There is no combined dataset and no standard schema across jurisdictions.
+\clearpage
+\subsection{Sector-Specific and State-Level Directories}
+
+The landscape includes dozens of additional directories, each serving a specific domain or geography:
+
+\begin{longtable}{@{}llp{4.5cm}l@{}}
+\toprule
+\rowcolor{headerbg} \theadstyle{Directory} & \theadstyle{Scope} & \theadstyle{Focus} & \theadstyle{Open?} \\
+\midrule
+\endhead
+My Aged Care & National & Aged care providers & No \\
+NDIS Provider Finder & National & Disability providers & Partial \\
+Head to Health & National & Mental health & No \\
+Workforce Australia & National & Employment providers & Partial \\
+Child Care Finder & National & Child care centres & Partial \\
+Carer Gateway & National & Carer support & No \\
+1800RESPECT & National & DV, sexual assault & No \\
+HealthPathways & National & Clinical referrals (31 PHNs) & No \\
+Victorian HSD & VIC & Community services & No \\
+QLD Community Directory & QLD & Community organisations & Partial \\
+Service NSW & NSW & Government services & No \\
+Salvation Army & National & Emergency relief & No \\
+St Vincent de Paul & National & Emergency relief & No \\
+Foodbank Australia & National & Food relief & No \\
+Alcohol \& Drug Foundation & National & Treatment services & No \\
+ReachOut & National & Youth mental health & No \\
+\bottomrule
+\caption{Sector-specific and state-level directories (non-exhaustive)}
+\end{longtable}
+
+HealthPathways is particularly significant: operated across 31 Primary Health Networks, it is one of the largest clinical service directory systems in Australia. It is entirely locked behind clinician logins.
+
+\subsection{OpenStreetMap}
+
+Community-contributed data for social facilities, community centres, NGOs, and charities under the Open Database License (ODbL) [7]. Coverage varies by region but is continuously updated by a global volunteer community.
+
+% --------------------------------------------------------------------
+% PART 2: THE GAP
+% --------------------------------------------------------------------
+
+\section{The Gap: No Open Consolidated Data}
+
+Each system described above serves a legitimate purpose and a real user base. Infoxchange provides a comprehensive directory for organisations and individuals. The NHSD serves health practitioners. Government portals publish what their agencies produce. Sector-specific directories serve their communities.
+
+The issue is not with any individual provider. The issue is structural: \textbf{there is no open, consolidated, interoperable dataset of support services in Australia.}
+
+\subsection{What ``open'' means in practice}
+
+For data to be genuinely useful to the broader ecosystem --researchers, developers, community organisations, government agencies, case workers --it needs to be:
+
+\begin{itemize}[nosep]
+    \item \textbf{Downloadable} --available as files (CSV, JSON, SQLite), not just through a search interface
+    \item \textbf{Licensed for reuse} --under an open license that permits redistribution and derivative works
+    \item \textbf{Schema-consistent} --using a common structure so records from different sources can be combined
+    \item \textbf{Attribution-transparent} --carrying provenance so users know where each record came from
+\end{itemize}
+
+\subsection{FAIR assessment}
+
+The FAIR Guiding Principles [8] --Findable, Accessible, Interoperable, Reusable --provide a standard framework for evaluating these qualities:
+
+\begin{table}[ht!]
+\centering
+\small
+\begin{tabular}{@{}p{2.2cm}p{3.5cm}p{3.5cm}p{3.5cm}@{}}
+\toprule
+\rowcolor{headerbg} \theadstyle{Principle} & \theadstyle{Infoxchange} & \theadstyle{Gov Portals} & \theadstyle{oa-sa} \\
+\midrule
+\textbf{Findable} & No DOI. Not in open data registries. & Fragmented across 6 portals. & DOI: 10.5281/ zenodo.19564281. \\
+\addlinespace
+\textbf{Accessible} & Gated API. Permission required. & Public APIs, but 6 separate endpoints. & HTTP download. No auth required. \\
+\addlinespace
+\textbf{Interoperable} & Proprietary schema. & Inconsistent schemas across portals. & 24-field standard schema. 17 normalised categories. \\
+\addlinespace
+\textbf{Reusable} & No open license. & CC-BY, but attribution varies by source. & CC0 code, CC-BY data. Provenance embedded. \\
+\bottomrule
+\end{tabular}
+\caption{FAIR assessment of Australian support services data}
+\end{table}
+
+\subsection{Why this matters}
+
+Without open, consolidated data:
+
+\begin{itemize}[nosep]
+    \item Organisations that want to build tools for vulnerable people must negotiate access with a single proprietary provider, or build their own data collection from scratch.
+    \item Researchers studying service accessibility, coverage gaps, or regional disparities cannot easily access or combine data across jurisdictions.
+    \item Government agencies cannot benchmark their own service coverage against a national picture.
+    \item Community organisations cannot verify whether their services are discoverable in the systems people actually use.
+    \item Case workers in the field are left searching across multiple disconnected platforms.
+\end{itemize}
+
+Open data does not replace proprietary directories. It enables a broader ecosystem to exist alongside them --one where anyone can build, analyse, and contribute without gatekeeping.
+
+% --------------------------------------------------------------------
+% PART 3: WHAT OA-SA DOES TODAY
+% --------------------------------------------------------------------
+
+\section{oa-sa: Current Architecture and Dataset}
+
+The Open Australian Services Archive is an automated, open-source pipeline that aggregates data from Australian government open data portals and OpenStreetMap into a single, standardised, openly licensed dataset.
+\clearpage
+\subsection{Architecture}
+
+\begin{verbatim}
+  Government CKAN APIs (6 portals)   -->  pipeline/ (fetch/transform/merge)
+                                                |
+                                                v
+                                         unified dataset
+                                         (CSV, JSON, SQLite)
+                                                ^
+                                                |
+  OpenStreetMap (Geofabrik extract)   -->  osm/ (download/filter/convert)
+\end{verbatim}
+
+The system is implemented as four repositories under the \texttt{oa-sa} GitHub organisation:
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{@{}lp{9cm}@{}}
+\toprule
+\rowcolor{headerbg} \theadstyle{Repository} & \theadstyle{Purpose} \\
+\midrule
+\texttt{oa-sa/data} & Published dataset in CSV, JSON, and SQLite formats \\
+\texttt{oa-sa/pipeline} & Python ETL pipeline: fetch from CKAN APIs, transform to common schema, merge into output \\
+\texttt{oa-sa/osm} & OpenStreetMap extraction via Geofabrik download and osmium filtering \\
+\texttt{oa-sa/landscape} & Research documentation: portal APIs, dataset catalogue, license matrix, data quality analysis \\
+\bottomrule
+\end{tabular}
+\caption{Repository structure (\url{https://github.com/oa-sa})}
+\end{table}
+
+\subsection{Pipeline}
+
+The pipeline operates in three stages:
+
+\begin{enumerate}[nosep]
+    \item \textbf{Fetch} --downloads CSVs from government CKAN APIs. Handles direct download, CKAN Datastore API (for portals that block cloud IP ranges), and GeoJSON formats.
+    \item \textbf{Transform} --normalises field names across sources, maps 130+ source-specific category labels to 17 standard categories, derives missing state values from postcodes, scores record quality (complete/partial/minimal), and strips HTML from text fields.
+    \item \textbf{Merge} --combines all transformed records into per-state and combined output files in CSV, JSON, and SQLite formats, with source attribution embedded in every record.
+\end{enumerate}
+
+\subsection{Dataset (April 2026)}
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+\rowcolor{headerbg} \theadstyle{Metric} & \theadstyle{Value} \\
+\midrule
+Total records & 24,498 \\
+Data sources & 25 (24 government + 1 OpenStreetMap) \\
+Government portals connected & 5 of 6 \\
+Schema fields & 24 (16 service fields + 8 source metadata) \\
+Service categories & 17 standardised \\
+Record completeness & 84\% complete, 15\% partial, 1\% minimal \\
+Output formats & CSV (12 MB), JSON (23 MB), SQLite (15 MB) \\
+Code license & CC0 1.0 (public domain) \\
+Data license & CC-BY (per source) \\
+DOI & 10.5281/zenodo.19564281 \\
+Web interface & \url{https://oa-sa.vercel.app} \\
+\bottomrule
+\end{tabular}
+\caption{oa-sa dataset summary}
+\end{table}
+
+\clearpage
+\subsection{Coverage by Jurisdiction}
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{@{}llrl@{}}
+\toprule
+\rowcolor{headerbg} \theadstyle{Jurisdiction} & \theadstyle{Sources} & \theadstyle{Records} & \theadstyle{Status} \\
+\midrule
+Federal & 3 & 7,237 & Connected \\
+South Australia & 4 & 14,610 & Connected \\
+Victoria & 6 & 393 & Connected \\
+Queensland & 8 & 524 & Connected \\
+Tasmania & 1 & 27 & Connected \\
+New South Wales & 0 & 0 & Infrastructure ready \\
+Western Australia & 0 & 0 & Limited portal data \\
+OpenStreetMap & 1 & 1,989 & Connected \\
+\midrule
+\textbf{Total} & \textbf{23} & \textbf{24,498} & \\
+\bottomrule
+\end{tabular}
+\caption{Data sources by jurisdiction}
+\end{table}
+
+\subsection{Source Landscape}
+
+The landscape repository tracks 55 data sources across all states and territories:
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{@{}lr@{}}
+\toprule
+\rowcolor{headerbg} \theadstyle{Status} & \theadstyle{Count} \\
+\midrule
+Connected (data flowing through pipeline) & 25 \\
+Blocked (format or authentication issues) & 5 \\
+Identified, not yet integrated & 25 \\
+\midrule
+\textbf{Total sources tracked} & \textbf{55} \\
+\bottomrule
+\end{tabular}
+\caption{Source tracking status}
+\end{table}
+
+\subsection{Infrastructure Cost}
+
+The system runs on free-tier infrastructure: GitHub Actions for pipeline execution, GitHub for data and code hosting, Vercel for the web interface. Total recurring cost: \$0.
+
+% --------------------------------------------------------------------
+% PART 4: EXPANSION POTENTIAL
+% --------------------------------------------------------------------
+
+\section{Expansion Potential}
+
+The current dataset of 24,498 records represents what is achievable through public APIs and open data alone. Several pathways exist for significant expansion.
+
+\subsection{Near-term: additional open sources}
+
+\begin{itemize}[nosep]
+    \item \textbf{ACNC Charity Register} --60,000+ registered charities with bulk download available [6]. Not yet integrated into the pipeline.
+    \item \textbf{Remaining government sources} --25 identified datasets not yet connected, particularly from NSW, WA, ACT, and NT.
+    \item \textbf{Additional OpenStreetMap tags} --libraries, clinics, pharmacies, and other facility types not currently extracted.
+\end{itemize}
+
+\clearpage
+\subsection{Medium-term: data partnerships}
+
+\begin{itemize}[nosep]
+    \item \textbf{State government data teams} --direct engagement could unlock datasets not currently on CKAN portals, or encourage publication of new datasets.
+    \item \textbf{Community organisations} --Foodbank Australia, OzHarvest, SecondBite, Salvation Army, Anglicare, Lifeline, and St Vincent de Paul each maintain service directories. Partnerships could bring these into the open dataset with proper licensing.
+    \item \textbf{NHSD} --390,000+ health services. API access requires approval from healthdirect Australia. Organisational credibility would support an application.
+    \item \textbf{Primary Health Networks} --31 PHNs maintain clinical referral directories. Engagement through health sector networks could explore open data publishing.
+\end{itemize}
+
+These require organisational relationships, introductions, and institutional credibility.
+
+\subsection{Long-term: community contribution}
+
+Case workers, volunteers, and community organisations have knowledge of services that exist in no database --small food pantries, informal support groups, community-run programs. A contribution mechanism could capture this knowledge, but requires infrastructure for submission, verification, and ongoing maintenance.
+
+% --------------------------------------------------------------------
+% PART 5: WHAT SPONSORSHIP ENABLES
+% --------------------------------------------------------------------
+
+\section{What Sponsorship Makes Possible}
+
+oa-sa demonstrates that the open data gap can be partially filled through automation. The question is whether it remains a small personal project or grows into infrastructure the sector can rely on.
+
+Sponsorship from an organisation with social impact mandate and government relationships would not just fund the project --it would fundamentally change what the project can achieve:
+
+\begin{table}[ht!]
+\centering
+\small
+\begin{tabular}{@{}p{3.5cm}p{4.5cm}p{4.5cm}@{}}
+\toprule
+\rowcolor{headerbg} \theadstyle{Capability} & \theadstyle{Without sponsorship} & \theadstyle{With sponsorship} \\
+\midrule
+Data sources & 25 public API sources & + partnerships with state agencies and community organisations \\
+\addlinespace
+Coverage & 24,498 records (20\% of landscape) & Potential to incorporate ACNC (60K), NHSD (390K), org directories \\
+\addlinespace
+Geographic reach & Thin in NSW, WA, ACT, NT & Introductions to state government data teams \\
+\addlinespace
+Community org data & No access & Introductions to Foodbank, Salvos, Anglicare, OzHarvest, Lifeline \\
+\addlinespace
+Credibility & Personal GitHub project & Recognised institutional backing \\
+\addlinespace
+Policy influence & None & Ability to advocate for open data publishing with government \\
+\addlinespace
+Sustainability & Dependent on individual & Organisational commitment and continuity \\
+\bottomrule
+\end{tabular}
+\caption{Impact of sponsorship on project capabilities}
+\end{table}
+
+\clearpage
+The infrastructure exists. The pipeline works. The data is flowing. But scaling from 24,000 records to hundreds of thousands changes the technical requirements significantly --larger datasets require dedicated hosting, a production API layer, database infrastructure, and ongoing maintenance. Equally important are the relationships, credibility, and institutional backing that open doors to the data that isn't public yet. Sponsorship enables both: the infrastructure to handle scale and the organisational identity to make partnerships possible.
+
+% --------------------------------------------------------------------
+\section*{References}
+
+\begin{enumerate}[nosep,label={[\arabic*]}]
+    \item Infoxchange, ``Service Directory.'' \url{https://www.infoxchange.org/au/products-and-services/service-directory}. Accessed April 2026.
+    \item Ask Izzy, ``About Ask Izzy.'' \url{https://about.askizzy.org.au/about/}. Accessed April 2026.
+    \item Ask Izzy, ``Data Privacy.'' \url{https://askizzy.org.au/information/data-privacy}. Accessed April 2026.
+    \item Australian Government, ``data.gov.au.'' \url{https://data.gov.au}. Accessed April 2026.
+    \item healthdirect Australia, ``National Health Services Directory.'' \url{https://about.healthdirect.gov.au/nhsd}. Accessed April 2026.
+    \item Australian Charities and Not-for-profits Commission, ``ACNC Charity Register.'' \url{https://www.acnc.gov.au/charity}. Accessed April 2026.
+    \item OpenStreetMap contributors. \url{https://www.openstreetmap.org}. Data under ODbL.
+    \item Wilkinson, M. D. et al., ``The FAIR Guiding Principles for scientific data management and stewardship.'' \textit{Scientific Data} 3, 160018 (2016).
+    \item Open Referral, ``Human Services Data Specification.'' \url{https://openreferral.org}. Accessed April 2026.
+\end{enumerate}
+
+\end{document}

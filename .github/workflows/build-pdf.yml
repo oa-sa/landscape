@@ -1,0 +1,31 @@
+name: Build White Paper PDF
+
+on:
+  push:
+    paths:
+      - 'whitepaper.tex'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile LaTeX
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: whitepaper.tex
+
+      - name: Commit PDF
+        run: |
+          mv whitepaper.pdf oasa-whitepaper.pdf
+          git config user.name "oa-sa-bot"
+          git config user.email "bot@oa-sa.org"
+          git add oasa-whitepaper.pdf
+          if git diff --cached --quiet; then
+            echo "No changes to PDF."
+          else
+            git commit -m "Rebuild white paper PDF ($(date -u +%Y-%m-%d))"
+            git push
+          fi
