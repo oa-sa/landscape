@@ -68,7 +68,7 @@
 \vspace{1em}
 
 \begin{abstract}
-Australians looking for help with food, housing, health, legal aid, work, mental health, family violence, disability or aged care rely on a patchwork of directories. The biggest ones are closed. Government open-data portals publish pieces of the picture under different schemas. Community-contributed data fills a little more. No openly licensed, consolidated dataset covers this ground end to end. This paper maps the landscape, looks at what comparable systems have built in Scotland, the UK and North America, and introduces the Open Australian Services Archive (oa-sa): an open pipeline that pulls 24,497 services from 26 public sources into a single standardised dataset. The paper is honest about what automated aggregation can and cannot reach. It sets out the standards oa-sa follows (FAIR, CARE, the Human Services Data Specification) and the explicit carve-outs required for safety-sensitive services.
+Australians looking for help with food, housing, health, legal aid, work, mental health, family violence, disability or aged care rely on a patchwork of directories. The biggest directories are freely accessible as services, but the underlying data is proprietary: there is no open licence, no bulk download, and no specification that lets another system exchange records with them. Government open-data portals publish pieces of the picture under different schemas. Community-contributed data fills a little more. No openly licensed, consolidated dataset covers this ground end to end. This paper maps the landscape, looks at what comparable systems have built in Scotland, the UK and North America, and introduces the Open Australian Services Archive (oa-sa): an open pipeline that pulls 24,497 services from 26 public sources into a single standardised dataset. The paper is honest about what automated aggregation can and cannot reach. It sets out the standards oa-sa follows (FAIR, CARE, the Human Services Data Specification) and the explicit carve-outs required for safety-sensitive services.
 \end{abstract}
 
 % --------------------------------------------------------------------
@@ -83,12 +83,12 @@ This section describes the systems that hold Australian support services data to
 
 Most Australian support services data sits inside a small number of national directories. These are run by not-for-profit providers under proprietary terms. Between them they hold several hundred thousand listings [19, 20]. They power the mobile apps and web tools that case workers and service users actually use day to day. One of the more widely-used apps was co-designed with people who have experienced homelessness [21]. The same directories feed bilateral APIs into federal and state governments and most of the peak bodies in the sector [19].
 
-The data is kept current by in-house curation teams. Staff spend their days on the phone to providers, verifying records and entering updates [19, 20]. The result is good. The trade-offs are about access, not quality:
+The data is kept current by in-house curation teams. Staff spend their days on the phone to providers, verifying records and entering updates [19, 20]. The result is good. The services themselves are freely usable by the public. The trade-offs are about what can be done with the underlying data, not about access to the service:
 
 \begin{itemize}[nosep]
-    \item \textbf{Access is conditional.} Use sits under bilateral licence agreements or terms that prohibit reuse without written consent. Bulk download is generally not available.
+    \item \textbf{Data reuse is conditional.} Programmatic access to the underlying records sits under bilateral licence agreements or terms that prohibit reuse without written consent. Bulk download is generally not available.
     \item \textbf{Schemas are proprietary.} Each directory uses its own internal data model. No published specification exists, so another system cannot ingest or contribute records programmatically.
-    \item \textbf{Licensing is closed.} The underlying dataset carries no Creative Commons or equivalent open licence.
+    \item \textbf{The data carries no open licence.} No Creative Commons or equivalent open licence is applied to the underlying dataset.
     \item \textbf{Redistribution is not permitted.} Partner organisations integrate through APIs or widgets at the provider's discretion. They cannot publish derivative datasets.
 \end{itemize}
 
@@ -263,7 +263,7 @@ These carve-outs have to be written down, published and in force \emph{before} c
 
 \section{The Structural Gap}
 
-The shape of the gap is now clear. Australia has comprehensive directories under closed licences. It has fragmented open data across eight government portals. It has openly licensed reference data (ACNC) that is not service-shaped. It does not have an open, consolidated, interoperable dataset of services that meets FAIR principles.
+The shape of the gap is now clear. Australia has comprehensive directories whose services are freely usable but whose underlying data sits under proprietary terms. It has fragmented open data across eight government portals. It has openly licensed reference data (ACNC) that is not service-shaped. It does not have an open, consolidated, interoperable dataset of services that meets FAIR principles.
 
 Mapped onto FAIR explicitly:
 
@@ -325,7 +325,7 @@ An honest note on staleness. There is no peer-reviewed Australian figure for the
 
 \subsection{Implication}
 
-This changes how to think about the project. The pipeline is not the product. The \emph{dataset} is the product. The pipeline is the cheapest way to get the first 20 per cent of that dataset, and it has done its job. Getting past 20 per cent is not an engineering problem. It is a curation and partnerships problem: cleaning data that arrives in unusable formats, negotiating open licences for data that already exists in closed ones, verifying records against the live world, and building a contribution path for knowledge that currently lives only in the heads of case workers and volunteers. oa-sa is a data project that uses software where software helps.
+This changes how to think about the project. The pipeline is not the product. The \emph{dataset} is the product. The pipeline is the cheapest way to get the first 20 per cent of that dataset, and it has done its job. Getting past 20 per cent is not an engineering problem. It is a curation and partnerships problem: cleaning data that arrives in unusable formats, negotiating open licences for data that already exists inside proprietary systems, verifying records against the live world, and building a contribution path for knowledge that currently lives only in the heads of case workers and volunteers. oa-sa is a data project that uses software where software helps.
 
 % --------------------------------------------------------------------
 % PART 6: OA-SA TODAY
@@ -479,9 +479,9 @@ Three broad pathways exist for developing the archive further. They are research
     \item \textbf{ACNC AIS Programs.} Openly licensed, service-shaped data from 2022 onwards. A candidate integration, subject to quality filtering.
 \end{itemize}
 
-\subsection{Medium-term: open licensing of existing closed data}
+\subsection{Medium-term: open licensing of existing proprietary data}
 
-The biggest single opportunity is not building new data collection. It is persuading existing closed directories to publish an openly licensed snapshot alongside their operational data. International precedent (ALISS, Open Referral UK, NCCARE360) shows this is achievable when a public funder, an anchor user and a shared standard are in place. The equivalent Australian conversation is the obvious next research question.
+The biggest single opportunity is not building new data collection. It is persuading existing directory operators to publish an openly licensed snapshot of their data alongside their operational platforms. International precedent (ALISS, Open Referral UK, NCCARE360) shows this is achievable when a public funder, an anchor user and a shared standard are in place. The equivalent Australian conversation is the obvious next research question.
 
 \subsection{Long-term: community contribution}
 
