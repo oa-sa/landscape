@@ -38,10 +38,19 @@
 \titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
 \titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
 
+% Version metadata. docversion is bumped manually per release.
+% docbuild defaults to "local" and is overridden by build-info.tex when
+% the PDF is produced by the GitHub Actions workflow (which writes a
+% build-info.tex containing \renewcommand{\docbuild}{<short-sha>}).
+\newcommand{\docversion}{1.0}
+\newcommand{\docbuild}{local}
+\IfFileExists{build-info.tex}{\input{build-info.tex}}{}
+
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small Open Australian Services Archive}
-\fancyhead[R]{\small White Paper}
+\fancyhead[R]{\small White Paper v\docversion}
+\fancyfoot[L]{\small v\docversion{} \textbullet{} build \texttt{\docbuild}}
 \fancyfoot[C]{\small\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 
@@ -52,7 +61,8 @@
 {\large Open Support Services Data in Australia: Landscape, Standards, and a Working Resource}\\[1.5em]
 {\normalsize Nirmala Rao Dhanawada}\\[0.3em]
 {\small \href{mailto:swnirmal@icloud.com}{swnirmal@icloud.com} \quad|\quad \url{https://github.com/oa-sa}}\\[1.5em]
-{\normalsize April 2026}
+{\normalsize April 2026}\\[0.3em]
+{\small\color{gray} Version \docversion{} \textbullet{} build \texttt{\docbuild}}
 \end{center}
 
 \vspace{1em}

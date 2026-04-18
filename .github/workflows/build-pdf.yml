@@ -12,10 +12,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Write build metadata
+        run: |
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          echo "\\renewcommand{\\docbuild}{${SHORT_SHA}}" > build-info.tex
+          echo "SHORT_SHA=${SHORT_SHA}" >> $GITHUB_ENV
+
       - name: Compile LaTeX
         uses: xu-cheng/latex-action@v3
         with:
           root_file: whitepaper.tex
+
+      - name: Read document version
+        run: |
+          DOC_VERSION=$(grep -oP '\\newcommand\{\\docversion\}\{\K[^}]+' whitepaper.tex | head -n 1)
+          echo "DOC_VERSION=${DOC_VERSION}" >> $GITHUB_ENV
 
       - name: Commit PDF to landscape repo
         run: |
@@ -26,7 +37,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to PDF."
           else
-            git commit -m "Rebuild white paper PDF ($(date -u +%Y-%m-%d))"
+            git commit -m "Rebuild white paper PDF v${DOC_VERSION} (build ${SHORT_SHA})"
             git push
           fi
 
@@ -41,6 +52,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to publish."
           else
-            git commit -m "Update white paper PDF ($(date -u +%Y-%m-%d))"
+            git commit -m "Update white paper PDF v${DOC_VERSION} (build ${SHORT_SHA})"
             git push
           fi
