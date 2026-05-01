@@ -42,13 +42,13 @@
 % docbuild defaults to "local" and is overridden by build-info.tex when
 % the PDF is produced by the GitHub Actions workflow (which writes a
 % build-info.tex containing \renewcommand{\docbuild}{<short-sha>}).
-\newcommand{\docversion}{1.0}
+\newcommand{\docversion}{1.1}
 \newcommand{\docbuild}{local}
 \IfFileExists{build-info.tex}{\input{build-info.tex}}{}
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small Open Australian Services Archive}
+\fancyhead[L]{\small Australian Open Services Index (AOSI)}
 \fancyhead[R]{\small White Paper v\docversion}
 \fancyfoot[L]{\small v\docversion{} \textbullet{} build \texttt{\docbuild}}
 \fancyfoot[C]{\small\thepage}
@@ -57,18 +57,19 @@
 \begin{document}
 
 \begin{center}
-{\LARGE\bfseries Open Australian Services Archive}\\[0.4em]
+{\LARGE\bfseries Australian Open Services Index}\\[0.2em]
+{\large\textbf{aosi}}\\[0.4em]
 {\large Open Support Services Data in Australia: Landscape, Standards, and a Working Resource}\\[1.5em]
 {\normalsize Nirmala Rao Dhanawada}\\[0.3em]
 {\small \href{mailto:swnirmal@icloud.com}{swnirmal@icloud.com} \quad|\quad \url{https://github.com/oa-sa}}\\[1.5em]
-{\normalsize April 2026}\\[0.3em]
+{\normalsize May 2026}\\[0.3em]
 {\small\color{gray} Version \docversion{} \textbullet{} build \texttt{\docbuild}}
 \end{center}
 
 \vspace{1em}
 
 \begin{abstract}
-Australians looking for help with food, housing, health, legal aid, work, mental health, family violence, disability or aged care rely on a patchwork of directories. The biggest directories are freely accessible as services, but the underlying data is proprietary: there is no open licence, no bulk download, and no specification that lets another system exchange records with them. Government open-data portals publish pieces of the picture under different schemas. Community-contributed data fills a little more. No openly licensed, consolidated dataset covers this ground end to end. This paper maps the landscape, looks at what comparable systems have built in Scotland, the UK and North America, and introduces the Open Australian Services Archive (oa-sa): an open pipeline that pulls 24,497 services from 26 public sources into a single standardised dataset. The paper is honest about what automated aggregation can and cannot reach. It sets out the standards oa-sa follows (FAIR, CARE, the Human Services Data Specification) and the explicit carve-outs required for safety-sensitive services.
+Australians looking for help with food, housing, health, legal aid, work, mental health, family violence, disability or aged care rely on a patchwork of directories. The biggest directories are freely accessible as services, but the underlying data is proprietary: there is no open licence, no bulk download, and no specification that lets another system exchange records with them. Government open-data portals publish pieces of the picture under different schemas. Community-contributed data fills a little more. No openly licensed, consolidated dataset covers this ground end to end. This paper maps the landscape, looks at what comparable systems have built in Scotland, the UK and North America, and introduces the Australian Open Services Index (aosi): an open pipeline that pulls 24,497 services from 27 public sources into a single standardised dataset, with a public web explorer and a native iOS app. The paper is honest about what automated aggregation can and cannot reach. It sets out the standards aosi follows (FAIR, CARE, the Human Services Data Specification) and the explicit carve-outs required for safety-sensitive services.
 \end{abstract}
 
 % --------------------------------------------------------------------
@@ -102,7 +103,7 @@ The National Health Services Directory (NHSD) is run by healthdirect Australia a
 
 The Australian Charities and Not-for-profits Commission publishes its Charity Register weekly as CSV and XLSX under CC-BY-AU 3.0 via data.gov.au [3]. It is the cleanest openly licensed dataset in this landscape.
 
-A registered charity is not the same as an active service. The register has short-form descriptions, no structured contact or location fields, and a lot of umbrella-entity duplicates (a single trustee corporation registered many times, one per parish or program). As a source it behaves like \emph{reference} data, not a service directory. I integrated it into oa-sa as a prototype in April 2026 and pulled it back out the same month. It grew the record count by an order of magnitude while cutting overall data quality.
+A registered charity is not the same as an active service. The register has short-form descriptions, no structured contact or location fields, and a lot of umbrella-entity duplicates (a single trustee corporation registered many times, one per parish or program). As a source it behaves like \emph{reference} data, not a service directory. I integrated it into aosi as a prototype in April 2026 and pulled it back out the same month. It grew the record count by an order of magnitude while cutting overall data quality.
 
 The ACNC's \textit{Annual Information Statement (AIS) Programs} dataset (2022 onwards) is a better fit. Each row describes a program a charity runs, with a description, beneficiary tags and operating locations. That is service-shaped data, and it remains a candidate for future integration.
 
@@ -272,7 +273,7 @@ Mapped onto FAIR explicitly:
 \small
 \begin{tabular}{@{}p{2.2cm}p{3.8cm}p{3.8cm}p{3.3cm}@{}}
 \toprule
-\rowcolor{headerbg} \theadstyle{Principle} & \theadstyle{Proprietary directories} & \theadstyle{Government open portals} & \theadstyle{oa-sa} \\
+\rowcolor{headerbg} \theadstyle{Principle} & \theadstyle{Proprietary directories} & \theadstyle{Government open portals} & \theadstyle{aosi} \\
 \midrule
 \textbf{Findable} & No DOI; access is by bilateral relationship. & Fragmented across eight portals; no unified index. & DOI-issued release; single download URL. \\
 \addlinespace
@@ -305,11 +306,11 @@ Open data of this kind does not replace the existing proprietary directories. It
 
 \section{What Automation Can and Cannot Reach}
 
-oa-sa started as an engineering hypothesis. If the data is legally open, a well-designed pipeline should be able to consolidate it. That turned out to be only partly true. The partial result is the most important finding of the project so far.
+aosi started as an engineering hypothesis. If the data is legally open, a well-designed pipeline should be able to consolidate it. That turned out to be only partly true. The partial result is the most important finding of the project so far.
 
 \subsection{The automation ceiling}
 
-Government open-data portals and OpenStreetMap together cover roughly 20 per cent of the Australian support-services landscape. This is the part you can reach with automation: public APIs, predictable schemas, machine-readable formats. oa-sa's current pipeline is close to exhausting that supply. Connecting the remaining 24 identified open sources would lift the number, but not the order of magnitude.
+Government open-data portals and OpenStreetMap together cover roughly 20 per cent of the Australian support-services landscape. This is the part you can reach with automation: public APIs, predictable schemas, machine-readable formats. aosi's current pipeline is close to exhausting that supply. Connecting the remaining 24 identified open sources would lift the number, but not the order of magnitude.
 
 The other 80 per cent is community-level services, small NGOs, local food banks, informal support groups, sector-specific directories and state directories that only exist as websites. That data is not missing because the pipeline is immature. It is missing because nobody ever published it as open data. No amount of extra engineering retrieves data that was never released in a machine-readable form.
 
@@ -321,19 +322,19 @@ This is why the comprehensive national directories employ in-house curation team
 
 \subsection{Directory rot}
 
-An honest note on staleness. There is no peer-reviewed Australian figure for the rate at which service-directory records go stale. The 20--30 per cent annual decay number people sometimes cite comes from B2B contact databases (Landbase, ZoomInfo). It is suggestive, not authoritative, for human services [18]. Open Referral case studies and NCCARE360 reports describe verification cycles ranging from six months to annual. Machine-to-machine source feeds reduce staleness by a lot compared with outreach-based verification. Producing an Australian evidence base on this question is itself a useful research contribution oa-sa can make, by instrumenting staleness metrics (record age, last-verified date, diff rate per snapshot) from day one.
+An honest note on staleness. There is no peer-reviewed Australian figure for the rate at which service-directory records go stale. The 20--30 per cent annual decay number people sometimes cite comes from B2B contact databases (Landbase, ZoomInfo). It is suggestive, not authoritative, for human services [18]. Open Referral case studies and NCCARE360 reports describe verification cycles ranging from six months to annual. Machine-to-machine source feeds reduce staleness by a lot compared with outreach-based verification. Producing an Australian evidence base on this question is itself a useful research contribution aosi can make, by instrumenting staleness metrics (record age, last-verified date, diff rate per snapshot) from day one.
 
 \subsection{Implication}
 
-This changes how to think about the project. The pipeline is not the product. The \emph{dataset} is the product. The pipeline is the cheapest way to get the first 20 per cent of that dataset, and it has done its job. Getting past 20 per cent is not an engineering problem. It is a curation and partnerships problem: cleaning data that arrives in unusable formats, negotiating open licences for data that already exists inside proprietary systems, verifying records against the live world, and building a contribution path for knowledge that currently lives only in the heads of case workers and volunteers. oa-sa is a data project that uses software where software helps.
+This changes how to think about the project. The pipeline is not the product. The \emph{dataset} is the product. The pipeline is the cheapest way to get the first 20 per cent of that dataset, and it has done its job. Getting past 20 per cent is not an engineering problem. It is a curation and partnerships problem: cleaning data that arrives in unusable formats, negotiating open licences for data that already exists inside proprietary systems, verifying records against the live world, and building a contribution path for knowledge that currently lives only in the heads of case workers and volunteers. aosi is a data project that uses software where software helps.
 
 % --------------------------------------------------------------------
 % PART 6: OA-SA TODAY
 % --------------------------------------------------------------------
 
-\section{oa-sa: The Current Resource}
+\section{aosi: The Current Resource}
 
-oa-sa is an automated, open-source pipeline. It aggregates Australian government open data and OpenStreetMap into a single standardised dataset under an open licence. It is designed as an \emph{open interoperability layer} for Australian human-services data: complementary to the existing directories, published under open licences, and aligned with international standards.
+aosi (Australian Open Services Index) is an automated, open-source pipeline and public service explorer. It aggregates Australian government open data and OpenStreetMap into a single standardised dataset under an open licence, and makes it searchable through a web interface and a native iOS app. It is designed as an \emph{open interoperability layer} for Australian human-services data: complementary to the existing directories, published under open licences, and aligned with international standards.
 
 \subsection{Architecture}
 
@@ -348,7 +349,7 @@ oa-sa is an automated, open-source pipeline. It aggregates Australian government
   OpenStreetMap (Geofabrik extract)   -->  osm/ (download/filter/convert)
 \end{verbatim}
 
-The system is five repositories under the \texttt{oa-sa} GitHub organisation:
+The system is six repositories under the \texttt{oa-sa} GitHub organisation:
 
 \begin{table}[ht!]
 \centering
@@ -359,6 +360,7 @@ The system is five repositories under the \texttt{oa-sa} GitHub organisation:
 \texttt{oa-sa/data} & Published dataset in CSV, JSON and SQLite formats \\
 \texttt{oa-sa/pipeline} & Python ETL: fetch from CKAN APIs, transform to common schema, merge into output \\
 \texttt{oa-sa/browse} & Web interface for searching and exploring the dataset (\url{https://oa-sa.vercel.app}) \\
+\texttt{oa-sa/aosi-ios} & Native iOS app, available on the App Store (\url{https://apps.apple.com/au/app/aosi/id6764553687}) \\
 \texttt{oa-sa/osm} & OpenStreetMap extraction via Geofabrik download and osmium filtering \\
 \texttt{oa-sa/landscape} & Research documentation: portal APIs, dataset catalogue, licence matrix, data-quality analysis \\
 \bottomrule
@@ -385,7 +387,7 @@ The pipeline runs in three stages:
 \rowcolor{headerbg} \theadstyle{Metric} & \theadstyle{Value} \\
 \midrule
 Total records & 24,497 \\
-Data sources & 26 (25 government + 1 OpenStreetMap) \\
+Data sources & 27 (26 government + 1 OpenStreetMap) \\
 Government portals connected & 5 of 6 \\
 Schema fields & 24 (16 service fields + 8 source metadata) \\
 Service categories & 17 standardised \\
@@ -395,10 +397,33 @@ Code licence & CC0 1.0 (public domain) \\
 Data licence & CC-BY (per source) \\
 DOI & 10.5281/zenodo.19564281 \\
 Web interface & \url{https://oa-sa.vercel.app} \\
+iOS app & \url{https://apps.apple.com/au/app/aosi/id6764553687} \\
 \bottomrule
 \end{tabular}
-\caption{oa-sa dataset summary}
+\caption{aosi dataset summary}
 \end{table}
+
+\subsection{Web explorer and iOS app}
+
+The dataset is browsable through a public web interface at \url{https://oa-sa.vercel.app} and a native iOS app available on the Apple App Store. Both are designed for case workers, researchers and members of the public looking for services near them.
+
+The web explorer provides:
+
+\begin{itemize}[nosep]
+    \item Interactive satellite map with 24{,}000+ service markers, colour-coded by category.
+    \item Pie-chart cluster icons showing the category mix within each cluster at a glance.
+    \item SA3 statistical-area boundaries (340 regions from the ABS) and state boundary overlays for geographic context.
+    \item Geolocation-based ``Near me'' sorting and radius-based ``Near a place'' filtering.
+    \item ``Search this area'' map-viewport filtering, full-text search, and faceted filtering by state, suburb, category, readiness, source type and data quality.
+    \item A detail panel with prominent call-to-action buttons (Call, Directions via Google Maps), copy-to-clipboard on phone numbers and addresses, Web Share API integration, and a ``Report issue'' link that pre-fills a GitHub issue.
+    \item Deep-linking: all filter state, selected service and map viewport are encoded in the URL for sharing and bookmarking.
+    \item Streaming data loading in batches of 1{,}000 records to keep the interface responsive during initial load.
+    \item Accessibility: ARIA landmarks, keyboard navigation, skip links, focus management, and screen-reader-compatible structure, targeting WCAG 2.1 AA.
+\end{itemize}
+
+The iOS app replicates core search and map functionality as a native experience. It is built with Expo and React Native and is available at \url{https://apps.apple.com/au/app/aosi/id6764553687}.
+
+Both interfaces include a disclaimer (``Data sourced from government registers and OpenStreetMap. This is an open-source research project. Always verify information before use.'') and link to published Terms of Use and Privacy Policy pages.
 
 \subsection{Coverage by jurisdiction}
 
@@ -417,7 +442,7 @@ New South Wales & 0 & 0 & Covered via federal sources \\
 Western Australia & 0 & 0 & Covered via federal sources \\
 OpenStreetMap & 1 & 1,929 & Connected \\
 \midrule
-\textbf{Total} & \textbf{26} & \textbf{24,497} & \\
+\textbf{Total} & \textbf{27} & \textbf{24,497} & \\
 \bottomrule
 \end{tabular}
 \caption{Data sources by jurisdiction}
@@ -435,7 +460,7 @@ The landscape repository tracks 56 data sources across all states and territorie
 \toprule
 \rowcolor{headerbg} \theadstyle{Status} & \theadstyle{Count} \\
 \midrule
-Connected (data flowing through pipeline) & 26 \\
+Connected (data flowing through pipeline) & 27 \\
 Blocked (format or authentication issues) & 5 \\
 Identified, not yet integrated & 24 \\
 Excluded (low signal; reference data only) & 1 \\
@@ -448,19 +473,20 @@ Excluded (low signal; reference data only) & 1 \\
 
 \subsection{Commitments}
 
-oa-sa operates under a set of explicit commitments. They are recorded in the project repository and they govern how any record is ingested or published:
+aosi operates under a set of explicit commitments. They are recorded in the project repository and they govern how any record is ingested or published:
 
 \begin{itemize}[nosep]
-    \item \textbf{HSDS alignment.} The current 24-field schema will be retired and re-expressed as an HSDS 3.1 profile, moving to 3.2 on release. That makes oa-sa records natively exchangeable with international open-referral systems.
+    \item \textbf{HSDS alignment.} The current 24-field schema will be retired and re-expressed as an HSDS 3.1 profile, moving to 3.2 on release. That makes aosi records natively exchangeable with international open-referral systems.
     \item \textbf{CARE compliance for Indigenous data.} Indigenous-specific services are included only by opt-in, with affiliate-level custodianship. A blanket CC-BY licence does not apply to this subset.
     \item \textbf{Safety carve-outs.} Family-violence, sexual-assault and homelessness-crisis services with confidential addresses are suppressed or coarsened by default.
     \item \textbf{Staleness instrumentation.} Every record carries a source-provenance field and an ingest timestamp. Record age, last-verified date and diff rate per snapshot are published alongside the dataset.
     \item \textbf{Delisting on request.} Any service can request removal. The process is documented and honoured.
+    \item \textbf{Terms and privacy.} Published Terms of Use and Privacy Policy cover data disclaimers, no-warranty posture, no-tracking commitment (no cookies, no analytics), and location-data handling (browser-only, never transmitted to servers).
 \end{itemize}
 
 \subsection{Infrastructure cost}
 
-The system runs on free-tier infrastructure today. GitHub Actions runs the pipeline. GitHub hosts the data and the code. Vercel serves the web interface. Recurring cost is \$0. That matters, but not because the project has to stay free. It matters because the \emph{publication} layer is cheap once the data is clean. The expensive part, as Section 5 argues, is not the infrastructure.
+The system runs on near-zero infrastructure. GitHub Actions runs the pipeline. GitHub hosts the data and the code. Vercel serves the web interface. The only recurring cost is the Apple Developer Program (A\$149/year) for the iOS app. That matters, but not because the project has to stay free. It matters because the \emph{publication} layer is cheap once the data is clean. The expensive part, as Section 5 argues, is not the infrastructure.
 
 % --------------------------------------------------------------------
 % PART 7: PATHWAYS
@@ -493,9 +519,9 @@ Case workers, volunteers and community organisations hold knowledge of services 
 
 \section{Conclusion}
 
-The case for oa-sa is not that the existing directories are inadequate. They are not. The case is that Australia lacks an \emph{open} layer in its services-data infrastructure. Something researchers can cite. Something civic technologists can build on. Something small organisations can integrate with without negotiating a licence first. Something the sector as a whole can align against.
+The case for aosi is not that the existing directories are inadequate. They are not. The case is that Australia lacks an \emph{open} layer in its services-data infrastructure. Something researchers can cite. Something civic technologists can build on. Something small organisations can integrate with without negotiating a licence first. Something the sector as a whole can align against.
 
-The work so far shows three things. First, the open-data portion of this infrastructure is reachable today with modest engineering: 24{,}497 records from 26 sources, CC0 code and CC-BY data, published under a DOI, at zero recurring cost. Second, the rest of the landscape is not an engineering problem. It is a curation and licensing problem, and it runs on the same human-maintenance economics that every successful services directory in the world runs on. Third, the international standards needed to do this responsibly (HSDS, FAIR, CARE) are mature and freely available, and the safety carve-outs needed to do it safely are well understood.
+The work so far shows three things. First, the open-data portion of this infrastructure is reachable today with modest engineering: 24{,}497 records from 27 sources, CC0 code and CC-BY data, published under a DOI, with a public web explorer and a native iOS app, at near-zero recurring cost. Second, the rest of the landscape is not an engineering problem. It is a curation and licensing problem, and it runs on the same human-maintenance economics that every successful services directory in the world runs on. Third, the international standards needed to do this responsibly (HSDS, FAIR, CARE) are mature and freely available, and the safety carve-outs needed to do it safely are well understood.
 
 This paper is a baseline. The landscape is mapped. The gap is described. The working resource exists, with the commitments and safeguards it operates under written down. What happens next is a sector conversation, not one project's roadmap.
 
